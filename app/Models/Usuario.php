@@ -3,25 +3,43 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Usuario extends Model
+
+class Usuario extends User
 {
-    use HasFactory;
 
-    use SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-//    public mixed $login;
-//    public mixed $email;
-//    /**
-//     * @var mixed|string
-//     */
-//    public mixed $senha;
-//    public mixed $cnpj;
-//    public mixed $cpf;
-    protected $fillable = [ 'login', 'email', 'senha', 'nome', 'razao_social', 'cpf', 'cnpj', 'url', 'dt_nascimento',
-                            'admin', 'doador', 'assinante', 'colaborador', 'voluntario', 'foto'];
-    //protected $hidden = ['senha'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [ 'login', 'email', 'senha', 'nome', 'razao_social', 'cpf', 'cnpj', 'url',
+        'admin', 'doador', 'assinante', 'colaborador', 'voluntario', 'foto'];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'senha',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'dt_nascimento' => 'date',
+    ];
 }
 

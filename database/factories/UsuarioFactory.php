@@ -2,10 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Usuario;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Usuario>
+ * @extends Factory<Usuario>
  */
 class UsuarioFactory extends Factory
 {
@@ -13,11 +15,12 @@ class UsuarioFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
+     * @throws Exception
      */
     public function definition()
     {
-        $teste = random_int(0,10);
-            if($teste > 6){
+        $rand = random_int(0,10);
+            if($rand > 6){
                 return [
                     'login' => fake()->lastName(),
                     'email' => fake()->unique()->safeEmail(),
