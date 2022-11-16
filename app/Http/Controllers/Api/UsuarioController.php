@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Usuario;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Throwable;
 
 class UsuarioController extends Controller
 {
@@ -22,7 +23,7 @@ class UsuarioController extends Controller
                 'status' => 200,
                 'message' => $usuarios,
             ]);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return response()->json([
                 'status' => 500,
                 'message' => $th->getMessage(),
@@ -44,7 +45,7 @@ class UsuarioController extends Controller
                 'status' => 200,
                 'message' => $usuario,
             ]);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return response()->json([
                 'status' => 500,
                 'message' => $th->getMessage(),
@@ -71,7 +72,7 @@ class UsuarioController extends Controller
                 'status' => 200,
                 'message' => $exist,
             ]);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return response()->json([
                 'status' => 500,
                 'message' => $th->getMessage(),
@@ -97,7 +98,7 @@ class UsuarioController extends Controller
                 'status' => 200,
                 'message' => $exist,
             ]);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return response()->json([
                 'status' => 500,
                 'message' => $th->getMessage(),
@@ -123,7 +124,7 @@ class UsuarioController extends Controller
                 'status' => 200,
                 'message' => $exist,
             ]);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return response()->json([
                 'status' => 500,
                 'message' => $th->getMessage(),
@@ -149,7 +150,7 @@ class UsuarioController extends Controller
                 'status' => 200,
                 'message' => $exist,
             ]);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return response()->json([
                 'status' => 500,
                 'message' => $th->getMessage(),
@@ -219,7 +220,7 @@ class UsuarioController extends Controller
                 'status' => 200,
                 'message' => "Usuário Alterado!",
             ]);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return response()->json([
                 'status' => 500,
                 'message' => $th->getMessage(),
@@ -242,7 +243,7 @@ class UsuarioController extends Controller
                 'status' => 200,
                 'message' => "Usuário Deletado!",
             ]);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage(),

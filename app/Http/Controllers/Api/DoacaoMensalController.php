@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Doacao;
+use App\Models\DoacaoMensal;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
 
-class DoacaoController extends Controller
+class DoacaoMensalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,20 +16,20 @@ class DoacaoController extends Controller
      * @return JsonResponse
      */
     public function index(): JsonResponse
-{
-    try {
-        $doacoes = Doacao::all();
-        return response()->json([
-            'status' => 200,
-            'message' => $doacoes,
-        ]);
-    } catch (Throwable $th) {
-        return response()->json([
-            'status' => 500,
-            'message' => $th->getMessage(),
-        ], 500);
+    {
+        try {
+            $doacoesMensais = DoacaoMensal::where('ativa', true)->orderBy('dia', 'asc')->get()->all();
+            return response()->json([
+                'status' => 200,
+                'message' => $doacoesMensais,
+            ]);
+        } catch (Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
-}
 
     /**
      * Show the form for creating a new resource.
@@ -39,15 +39,23 @@ class DoacaoController extends Controller
     public function create(Request $request): JsonResponse
     {
         try {
-            if ($request->valor !== null){
-                $doacao = Doacao::create([
-                    'id_usuario' =>auth()->user()->getAuthIdentifier(),
+            if ($request->valor !== null && $request->dia !== null){
+                $id = auth()->user()->getAuthIdentifier();
+                $doacaoAtual = DoacaoMensal::where('id_usuario', $id)->first();
+                if ($doacaoAtual !== null) {
+                    $doacaoAtual->ativa = false;
+                    $doacaoAtual->save();
+                }
+                $doacao = DoacaoMensal::create([
+                    'id_usuario' => $id,
                     'valor' => $request->valor,
+                    'dia' => $request->dia,
+                    'ativa' => true
                 ]);
                 $doacao->save();
                 return response()->json([
                     'status' => 201,
-                    'message' => "Doação Enviada",
+                    'message' => "Doação Programada",
                 ], 201);
             } else{
                 return response()->json([
@@ -67,41 +75,17 @@ class DoacaoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getByMonth(int $mes, int $ano): JsonResponse
-    {
-        try {
-            $doacoes = Doacao::whereYear('created_at', '=', $ano)
-                ->whereMonth('created_at', '=', $mes)
-                ->get()->all();
-            return response()->json([
-                'status' => 200,
-                'message' => $doacoes
-            ], 200);
-        } catch (Throwable $th) {
-            return response()->json([
-                'status' => 500,
-                'message' => $th->getMessage(),
-            ], 500);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
      * @return JsonResponse
      */
     public function getByUser(): JsonResponse
     {
         try {
             $id = auth()->user()->getAuthIdentifier();
-            $doacoes = Doacao::where('id_usuario', $id)
-                ->get()->all();
+            $doacaoMensal = DoacaoMensal::where('id_usuario', $id)->where('ativa', true)
+                ->get()->first();
             return response()->json([
                 'status' => 200,
-                'message' => $doacoes,
+                'message' => $doacaoMensal,
             ]);
         } catch (Throwable $th) {
             return response()->json([
@@ -114,21 +98,27 @@ class DoacaoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return JsonResponse
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id): JsonResponse
     {
         try {
-            $doacao = Doacao::find($id);
+            $doacaoMensal = DoacaoMensal::find($id);
             if ($request->valor !== null){
-                $doacao->valor = $request->valor;
+                $doacaoMensal->valor = $request->valor;
             }
-            $doacao->save();
+            if ($request->dia !== null){
+                $doacaoMensal->dia = $request->dia;
+            }
+            if ($request->ativa !== null){
+                $doacaoMensal->ativa = $request->ativa;
+            }
+            $doacaoMensal->save();
             return response()->json([
                 'status' => 200,
-                'message' => "Doação Alterada!",
+                'message' => "Doação Mensal Alterada!",
             ]);
         } catch (Throwable $th) {
             return response()->json([
@@ -144,14 +134,14 @@ class DoacaoController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function destroy(int $id)
+    public function destroy(int $id): JsonResponse
     {
         try {
-            $doacao = Doacao::find($id);
-            $doacao->delete();
+            $doacaoMensal = DoacaoMensal::find($id);
+            $doacaoMensal->delete();
             return response()->json([
                 'status' => 200,
-                'message' => "Doação Deletada!",
+                'message' => "Doação Mensal Apagada!",
             ]);
         } catch (Throwable $th) {
             return response()->json([
