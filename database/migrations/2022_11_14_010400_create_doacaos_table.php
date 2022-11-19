@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('doacaos', function (Blueprint $table) {
+        Schema::create('doacoes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_usuario')->references("id")->on("usuarios");
             $table->unsignedFloat('valor');
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('doacaos');
+        Schema::dropIfExists('doacoes');
     }
 };

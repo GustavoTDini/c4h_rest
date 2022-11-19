@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Doacao;
-use App\Models\Usuario;
+use App\Models\Telefone;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
 
-class DoacaoController extends Controller
+class TelefoneController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,20 +16,20 @@ class DoacaoController extends Controller
      * @return JsonResponse
      */
     public function index(): JsonResponse
-{
-    try {
-        $doacoes = Doacao::all();
-        return response()->json([
-            'status' => 200,
-            'message' => $doacoes,
-        ]);
-    } catch (Throwable $th) {
-        return response()->json([
-            'status' => 500,
-            'message' => $th->getMessage(),
-        ], 500);
+    {
+        try {
+            $telefones = Telefone::all();
+            return response()->json([
+                'status' => 200,
+                'message' => $telefones,
+            ]);
+        } catch (Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
-}
 
     /**
      * Show the form for creating a new resource.
@@ -40,17 +39,18 @@ class DoacaoController extends Controller
     public function create(Request $request): JsonResponse
     {
         try {
-            if ($request->valor !== null){
+            if ($request->nome !== null && $request->ddd !== null && $request->numero !== null ){
                 $id = auth()->user()->getAuthIdentifier();
-                $doacao = Doacao::create([
+                $telefone = Telefone::create([
                     'id_usuario' =>$id,
-                    'valor' => $request->valor,
+                    'nome' => $request->nome,
+                    'numero' => $request->numero,
+                    'ddd' => $request->ddd,
                 ]);
-                Usuario::where('id', $id)->update(['doador' => true]);
-                $doacao->save();
+                $telefone->save();
                 return response()->json([
                     'status' => 201,
-                    'message' => "Doação Enviada",
+                    'message' => "Telefone Criado",
                 ], 201);
             } else{
                 return response()->json([
@@ -59,7 +59,7 @@ class DoacaoController extends Controller
                 ], 400);
 
             }
-        } catch (Throwable $th) {
+        } catch (\Throwable $th) {
             return response()->json([
                 'status' => 500,
                 'message' => $th->getMessage(),
@@ -70,40 +70,16 @@ class DoacaoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getByMonth(int $mes, int $ano): JsonResponse
-    {
-        try {
-            $doacoes = Doacao::whereYear('created_at', '=', $ano)
-                ->whereMonth('created_at', '=', $mes)
-                ->get()->all();
-            return response()->json([
-                'status' => 200,
-                'message' => $doacoes
-            ], 200);
-        } catch (Throwable $th) {
-            return response()->json([
-                'status' => 500,
-                'message' => $th->getMessage(),
-            ], 500);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
+     * @param  \App\Models\Telefone  $telefone
      * @return \Illuminate\Http\Response
      */
     public function getById(int $id): JsonResponse
     {
         try {
-            $doacao = Doacao::find($id);
+            $telefone = Telefone::find($id);
             return response()->json([
                 'status' => 200,
-                'message' => $doacao,
+                'message' => $telefone,
             ]);
         } catch (Throwable $th) {
             return response()->json([
@@ -122,11 +98,11 @@ class DoacaoController extends Controller
     {
         try {
             $id = auth()->user()->getAuthIdentifier();
-            $doacoes = Doacao::where('id_usuario', $id)
+            $telefones = Telefone::where('id_usuario', $id)
                 ->get()->all();
             return response()->json([
                 'status' => 200,
-                'message' => $doacoes,
+                'message' => $telefones,
             ]);
         } catch (Throwable $th) {
             return response()->json([
@@ -143,17 +119,24 @@ class DoacaoController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id): JsonResponse
     {
         try {
-            $doacao = Doacao::find($id);
-            if ($request->valor !== null){
-                $doacao->valor = $request->valor;
+            $telefone = Telefone::find($id);
+            if ($request->nome !== null){
+                $telefone->nome = $request->nome;
             }
-            $doacao->save();
+            if ($request->ddd !== null){
+                $telefone->ddd = $request->ddd;
+            }
+            if ($request->numero !== null){
+                $telefone->numero = $request->numero;
+            }
+
+            $telefone->save();
             return response()->json([
                 'status' => 200,
-                'message' => "Doação Alterada!",
+                'message' => "Telefone Alterado!",
             ]);
         } catch (Throwable $th) {
             return response()->json([
@@ -169,14 +152,14 @@ class DoacaoController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function destroy(int $id)
+    public function destroy(int $id): JsonResponse
     {
         try {
-            $doacao = Doacao::find($id);
-            $doacao->delete();
+            $telefone = Telefone::find($id);
+            $telefone->delete();
             return response()->json([
                 'status' => 200,
-                'message' => "Doação Deletada!",
+                'message' => "Telefone Deletado!",
             ]);
         } catch (Throwable $th) {
             return response()->json([

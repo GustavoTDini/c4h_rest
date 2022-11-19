@@ -54,6 +54,27 @@ class UsuarioController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @return JsonResponse
+     */
+    public function getCurrentLoggedUser(): JsonResponse
+    {
+        try {
+            $usuario = auth()->user();
+            return response()->json([
+                'status' => 200,
+                'message' => $usuario,
+            ]);
+        } catch (Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
      * Check if exists user with login $login
      *
      * @param  string $login
@@ -165,7 +186,7 @@ class UsuarioController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id): JsonResponse
     {
         try {
             $usuario = Usuario::find($id);
@@ -234,7 +255,7 @@ class UsuarioController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function destroy(int $id)
+    public function destroy(int $id): JsonResponse
     {
         try {
             $usuario = Usuario::find($id);

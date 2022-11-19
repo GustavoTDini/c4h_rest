@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Doacao;
+use App\Models\Telefone;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Doacao>
+ * @extends Factory<Telefone>
  */
-class DoacaoFactory extends Factory
+class TelefoneFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,7 +19,9 @@ class DoacaoFactory extends Factory
     {
         return [
             'id_usuario' => fake()->numberBetween(1,50),
-            'valor' => fake()->numberBetween(1, 100),
+            'nome' => fake()->languageCode(),
+            'ddd' => fake()->randomNumber(3),
+            'numero' => fake()->randomNumber(9),
         ];
     }
 }

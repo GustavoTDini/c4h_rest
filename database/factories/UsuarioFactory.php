@@ -17,12 +17,12 @@ class UsuarioFactory extends Factory
      * @return array<string, mixed>
      * @throws Exception
      */
-    public function definition()
+    public function definition(): array
     {
         $rand = random_int(0,10);
-            if($rand > 6){
+            if($rand > 7){
                 return [
-                    'login' => fake()->lastName(),
+                    'login' => fake()->name(),
                     'email' => fake()->unique()->safeEmail(),
                     'senha' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                     'nome' => fake()->name(),
@@ -30,7 +30,7 @@ class UsuarioFactory extends Factory
                 ];
             } else{
                 return [
-                    'login' => fake()->lastName(),
+                    'login' => fake()->company(),
                     'email' => fake()->unique()->safeEmail(),
                     'senha' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                     'razao_social' => fake()->company(),

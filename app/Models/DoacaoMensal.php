@@ -16,6 +16,8 @@ class DoacaoMensal extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [ 'id_usuario', 'valor', 'dia', 'ativa'];
+    protected $table = 'doacoes_mensais';
+
+    protected $fillable = [ 'id', 'id_usuario', 'valor', 'dia', 'ativa'];
 
 }

@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Doacao;
+use App\Models\TipoRede;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Doacao>
+ * @extends Factory<TipoRede>
  */
-class DoacaoFactory extends Factory
+class TipoRedeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,8 @@ class DoacaoFactory extends Factory
     public function definition()
     {
         return [
-            'id_usuario' => fake()->numberBetween(1,50),
-            'valor' => fake()->numberBetween(1, 100),
+            'nome' => fake()->company(),
+            'logo' => fake()->image(),
         ];
     }
 }

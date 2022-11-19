@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\DoacaoMensal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DoacaoMensal>
+ * @extends Factory<DoacaoMensal>
  */
 class DoacaoMensalFactory extends Factory
 {
@@ -17,7 +18,7 @@ class DoacaoMensalFactory extends Factory
     public function definition()
     {
         return [
-            'id_usuario' => fake()->numberBetween(1,20),
+            'id_usuario' => fake()->numberBetween(1,50),
             'valor' => fake()->numberBetween(1, 100),
             'dia' => fake()->numberBetween(1, 28),
             'ativa' => true,

@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('doacoes_mensais', function (Blueprint $table) {
+        Schema::create('redes_sociais', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_usuario')->references("id")->on("usuarios");
-            $table->unsignedFloat('valor');
-            $table->unsignedInteger('dia');
-            $table->boolean('ativa');
+            $table->foreignId('id_rede')->references('id')->on('tipos_rede');
+            $table->string('url');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('doacoes_mensais');
+        Schema::dropIfExists('redes_sociais');
     }
 };

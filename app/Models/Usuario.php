@@ -20,6 +20,8 @@ class Usuario extends User
      *
      * @var array<int, string>
      */
+    protected $table = 'usuarios';
+
     protected $fillable = [ 'login', 'email', 'senha', 'nome', 'razao_social', 'cpf', 'cnpj', 'url',
         'admin', 'doador', 'assinante', 'colaborador', 'voluntario', 'foto'];
 

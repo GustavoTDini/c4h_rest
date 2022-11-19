@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\DoacaoMensal;
-use App\Models\Usuario;
+use App\Models\TipoRede;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
 
-class DoacaoMensalController extends Controller
+class TipoRedeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,10 +18,10 @@ class DoacaoMensalController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $doacoesMensais = DoacaoMensal::where('ativa', true)->orderBy('dia', 'asc')->get()->all();
+            $tiposRede = TipoRede::all();
             return response()->json([
                 'status' => 200,
-                'message' => $doacoesMensais,
+                'message' => $tiposRede,
             ]);
         } catch (Throwable $th) {
             return response()->json([
@@ -40,24 +39,15 @@ class DoacaoMensalController extends Controller
     public function create(Request $request): JsonResponse
     {
         try {
-            if ($request->valor !== null && $request->dia !== null){
-                $id = auth()->user()->getAuthIdentifier();
-                $doacaoAtual = DoacaoMensal::where('id_usuario', $id)->first();
-                if ($doacaoAtual !== null) {
-                    $doacaoAtual->ativa = false;
-                    $doacaoAtual->save();
-                }
-                $doacao = DoacaoMensal::create([
-                    'id_usuario' => $id,
-                    'valor' => $request->valor,
-                    'dia' => $request->dia,
-                    'ativa' => true
+            if ($request->nome !== null && $request->logo !== null ){
+                $tipoRede = TipoRede::create([
+                    'nome' => $request->nome,
+                    'logo' => $request->logo,
                 ]);
-                Usuario::where('id', $id)->update(['assinante' => true]);
-                $doacao->save();
+                $tipoRede->save();
                 return response()->json([
                     'status' => 201,
-                    'message' => "Doação Programada",
+                    'message' => "Tipo de Rede Criado",
                 ], 201);
             } else{
                 return response()->json([
@@ -66,7 +56,7 @@ class DoacaoMensalController extends Controller
                 ], 400);
 
             }
-        } catch (Throwable $th) {
+        } catch (\Throwable $th) {
             return response()->json([
                 'status' => 500,
                 'message' => $th->getMessage(),
@@ -74,42 +64,20 @@ class DoacaoMensalController extends Controller
         }
     }
 
+
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  \App\Models\TipoRede  $tipoRede
      * @return \Illuminate\Http\Response
      */
     public function getById(int $id): JsonResponse
     {
         try {
-            $doacaoMensal = DoacaoMensal::find($id);
+            $tipoRede = TipoRede::find($id);
             return response()->json([
                 'status' => 200,
-                'message' => $doacaoMensal,
-            ]);
-        } catch (Throwable $th) {
-            return response()->json([
-                'status' => 500,
-                'message' => $th->getMessage(),
-            ], 500);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return JsonResponse
-     */
-    public function getByUser(): JsonResponse
-    {
-        try {
-            $id = auth()->user()->getAuthIdentifier();
-            $doacaoMensal = DoacaoMensal::where('id_usuario', $id)->where('ativa', true)
-                ->get()->first();
-            return response()->json([
-                'status' => 200,
-                'message' => $doacaoMensal,
+                'message' => $tipoRede,
             ]);
         } catch (Throwable $th) {
             return response()->json([
@@ -122,27 +90,25 @@ class DoacaoMensalController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
      * @return JsonResponse
      */
     public function update(Request $request, int $id): JsonResponse
     {
         try {
-            $doacaoMensal = DoacaoMensal::find($id);
-            if ($request->valor !== null){
-                $doacaoMensal->valor = $request->valor;
+            $tipoRede = TipoRede::find($id);
+            if ($request->nome !== null){
+                $tipoRede->nome = $request->nome;
             }
-            if ($request->dia !== null){
-                $doacaoMensal->dia = $request->dia;
+            if ($request->logo !== null){
+                $tipoRede->logo = $request->logo;
             }
-            if ($request->ativa !== null){
-                $doacaoMensal->ativa = $request->ativa;
-            }
-            $doacaoMensal->save();
+
+            $tipoRede->save();
             return response()->json([
                 'status' => 200,
-                'message' => "Doação Mensal Alterada!",
+                'message' => "Tipo de Rede Alterado!",
             ]);
         } catch (Throwable $th) {
             return response()->json([
@@ -161,13 +127,11 @@ class DoacaoMensalController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            $doacaoMensal = DoacaoMensal::find($id);
-            $doacaoMensal->delete();
-            $idUsuario = auth()->user()->getAuthIdentifier();
-            Usuario::where('id', $idUsuario)->update(['assinante' => false]);
+            $tipoRede = TipoRede::find($id);
+            $tipoRede->delete();
             return response()->json([
                 'status' => 200,
-                'message' => "Doação Mensal Apagada!",
+                'message' => "Tipo de Rede Deletado!",
             ]);
         } catch (Throwable $th) {
             return response()->json([

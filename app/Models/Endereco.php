@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
-class Doacao extends Model
+class Endereco extends Model
 {
     use HasFactory, Notifiable, SoftDeletes;
 
@@ -16,8 +16,8 @@ class Doacao extends Model
      *
      * @var array<int, string>
      */
-    protected $table = 'doacoes';
+    protected $table = 'enderecos';
 
-    protected $fillable = [ 'id_usuario', 'valor'];
+    protected $fillable = [ 'id',  'id_usuario', 'nome', 'logradouro', 'numero', 'cep', 'complemento', 'bairro', 'cidade', 'estado'];
 
 }
