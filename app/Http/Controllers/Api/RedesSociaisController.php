@@ -102,12 +102,12 @@ class RedesSociaisController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  int  $id
      * @return JsonResponse
      */
-    public function getByUser(): JsonResponse
+    public function getByUser(int $id): JsonResponse
     {
         try {
-            $id = auth()->user()->getAuthIdentifier();
             $redeSociais = RedesSociais::where('id_usuario', $id)
                 ->get()->all();
             $redeSociaisJson = [];

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('tipos_rede', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->binary('logo');
+            $table->string('logo');
             $table->timestamps();
             $table->softDeletes();
         });

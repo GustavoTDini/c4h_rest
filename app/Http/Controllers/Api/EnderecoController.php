@@ -77,7 +77,7 @@ class EnderecoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Endereco  $endereco
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function getById(int $id): JsonResponse
@@ -99,12 +99,12 @@ class EnderecoController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  int  $id
      * @return JsonResponse
      */
-    public function getByUser(): JsonResponse
+    public function getByUser(int $id): JsonResponse
     {
         try {
-            $id = auth()->user()->getAuthIdentifier();
             $enderecos = Endereco::where('id_usuario', $id)
                 ->get()->all();
             return response()->json([

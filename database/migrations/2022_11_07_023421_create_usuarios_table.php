@@ -29,7 +29,7 @@ return new class extends Migration
             $table->boolean('assinante')->default(false);
             $table->boolean('colaborador')->default(false);
             $table->boolean('voluntario')->default(false);
-            $table->binary('foto')->nullable()->default(null);
+            $table->string('foto')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });

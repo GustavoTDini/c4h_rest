@@ -37,7 +37,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Rotas do usuario e autenticação restritas
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::get('/usuario', [UsuarioController::class, 'index']);
-    Route::get('/usuario/logged', [UsuarioController::class, 'getCurrentLoggedUser']);
+    Route::get('/usuario_logged', [UsuarioController::class, 'getCurrentLoggedUser']);
     Route::delete('/usuario/{id}', [UsuarioController::class, 'destroy']);
     Route::patch('/usuario/{id}', [UsuarioController::class, 'update']);
     Route::get('/usuario/{id}', [UsuarioController::class, 'getById']);
@@ -46,8 +46,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/doacoes', [DoacaoController::class, 'index']);
     Route::post('/doacoes', [DoacaoController::class, 'create']);
     Route::get('/doacoes/{id}', [DoacaoController::class, 'getById']);
-    Route::get('/doacoes/mes/{mes}&{ano}', [DoacaoController::class, 'getByMonth']);
-    Route::get('/doacoes/usuario', [DoacaoController::class, 'getByUser']);
+    Route::get('/doacoes_mes/{mes}&{ano}', [DoacaoController::class, 'getByMonth']);
+    Route::get('/doacoes_usuario', [DoacaoController::class, 'getByUser']);
     Route::delete('/doacoes/{id}', [DoacaoController::class, 'destroy']);
     Route::patch('/doacoes/{id}', [DoacaoController::class, 'update']);
 
@@ -55,14 +55,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/doacoesMensais', [DoacaoMensalController::class, 'index']);
     Route::post('/doacoesMensais', [DoacaoMensalController::class, 'create']);
     Route::get('/doacoesMensais/{id}', [DoacaoMensalController::class, 'getById']);
-    Route::get('/doacoesMensais/usuario', [DoacaoMensalController::class, 'getByUser']);
+    Route::get('/doacoesMensais_usuario', [DoacaoMensalController::class, 'getByUser']);
     Route::delete('/doacoesMensais/{id}', [DoacaoMensalController::class, 'destroy']);
     Route::patch('/doacoesMensais/{id}', [DoacaoMensalController::class, 'update']);
 
     // Rotas de Telefones restritas
     Route::get('/telefone', [TelefoneController::class, 'index']);
     Route::post('/telefone', [TelefoneController::class, 'create']);
-    Route::get('/telefone/usuario', [TelefoneController::class, 'getByUser']);
+    Route::get('/telefone_usuario/{id}', [TelefoneController::class, 'getByUser']);
     Route::get('/telefone/{id}', [TelefoneController::class, 'getById']);
     Route::delete('/telefone/{id}', [TelefoneController::class, 'destroy']);
     Route::patch('/telefone/{id}', [TelefoneController::class, 'update']);
@@ -70,7 +70,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Rotas de Endereços restritas
     Route::get('/endereco', [EnderecoController::class, 'index']);
     Route::post('/endereco', [EnderecoController::class, 'create']);
-    Route::get('/endereco/usuario', [EnderecoController::class, 'getByUser']);
+    Route::get('/endereco_usuario/{id}', [EnderecoController::class, 'getByUser']);
     Route::get('/endereco/{id}', [EnderecoController::class, 'getById']);
     Route::delete('/endereco/{id}', [EnderecoController::class, 'destroy']);
     Route::patch('/endereco/{id}', [EnderecoController::class, 'update']);
@@ -78,7 +78,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Rotas de RodesSociais restritas
     Route::get('/rede', [RedesSociaisController::class, 'index']);
     Route::post('/rede', [RedesSociaisController::class, 'create']);
-    Route::get('/rede/usuario', [RedesSociaisController::class, 'getByUser']);
+    Route::get('/rede_usuario/{id}', [RedesSociaisController::class, 'getByUser']);
     Route::get('/rede/{id}', [RedesSociaisController::class, 'getById']);
     Route::delete('/rede/{id}', [RedesSociaisController::class, 'destroy']);
     Route::patch('/rede/{id}', [RedesSociaisController::class, 'update']);
