@@ -19,14 +19,15 @@ class EnderecoFactory extends Factory
     {
         return [
             'id_usuario' => fake()->numberBetween(1,50),
-            'nome' => fake()->mimeType(),
+            'tipo' => fake()->mimeType(),
             'logradouro' => fake()->languageCode(),
             'numero' => fake()->randomNumber(2),
             'cep' => fake()->numerify("########"),
             'complemento' => fake()->streetSuffix(),
             'bairro' => fake()->colorName(),
             'cidade' => fake()->city(),
-            'estado' => fake()->country()
+            'estado' => fake()->country(),
+            'pais' => fake()->country()
         ];
     }
 }

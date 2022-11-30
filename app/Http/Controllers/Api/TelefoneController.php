@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Telefone;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Throwable;
 
 class TelefoneController extends Controller
@@ -39,10 +40,9 @@ class TelefoneController extends Controller
     public function create(Request $request): JsonResponse
     {
         try {
-            if ($request->nome !== null && $request->ddd !== null && $request->numero !== null ){
-                $id = auth()->user()->getAuthIdentifier();
+            if ($request->nome !== null && $request->ddd !== null && $request->numero !== null && $request->userId !== null){
                 $telefone = Telefone::create([
-                    'id_usuario' =>$id,
+                    'id_usuario' =>$request->userId,
                     'nome' => $request->nome,
                     'numero' => $request->numero,
                     'ddd' => $request->ddd,
@@ -59,7 +59,7 @@ class TelefoneController extends Controller
                 ], 400);
 
             }
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return response()->json([
                 'status' => 500,
                 'message' => $th->getMessage(),
@@ -71,7 +71,7 @@ class TelefoneController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function getById(int $id): JsonResponse
     {

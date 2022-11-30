@@ -39,12 +39,12 @@ class EnderecoController extends Controller
     public function create(Request $request): JsonResponse
     {
         try {
-            if ($request->nome !== null && $request->logradouro !== null && $request->numero !== null && $request->cep !== null
-                && $request->complemento !== null && $request->bairro !== null && $request->cidade !== null && $request->estado !== null ){
-                $id = auth()->user()->getAuthIdentifier();
+            if ($request->tipo !== null && $request->logradouro !== null && $request->numero !== null
+                && $request->cep !== null && $request->bairro !== null && $request->cidade !== null
+                && $request->estado !== null && $request->pais !== null && $request->userId){
                 $endereco = Endereco::create([
-                    'id_usuario' =>$id,
-                    'nome' => $request->nome,
+                    'id_usuario' =>$request->userId,
+                    'tipo' => $request->tipo,
                     'logradouro' => $request->logradouro,
                     'numero' => $request->numero,
                     'cep' => $request->cep,
@@ -52,6 +52,7 @@ class EnderecoController extends Controller
                     'bairro' => $request->bairro,
                     'cidade' => $request->cidade,
                     'estado' => $request->estado,
+                    'pais' => $request->pais,
                 ]);
                 $endereco->save();
                 return response()->json([
@@ -153,6 +154,9 @@ class EnderecoController extends Controller
             }
             if ($request->estado !== null){
                 $endereco->estado = $request->estado;
+            }
+            if ($request->pais !== null){
+                $endereco->pais = $request->pais;
             }
 
             $endereco->save();

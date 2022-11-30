@@ -16,14 +16,15 @@ return new class extends Migration
         Schema::create('enderecos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_usuario')->references("id")->on("usuarios");
-            $table->string('nome');
+            $table->string('tipo');
             $table->string('logradouro');
             $table->string('numero');
             $table->string('cep');
-            $table->string('complemento');
+            $table->string('complemento')->nullable();
             $table->string('bairro');
             $table->string('cidade');
             $table->string('estado');
+            $table->string('pais');
             $table->timestamps();
             $table->softDeletes();
         });
